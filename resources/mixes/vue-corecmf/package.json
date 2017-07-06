@@ -28,7 +28,6 @@
     "builder-vue-element": "^1.0.3",
     "chalk": "^1.1.3",
     "connect-history-api-fallback": "^1.3.0",
-    "container-vue-element": "^1.0.3",
     "copy-webpack-plugin": "^4.0.1",
     "css-loader": "^0.28.1",
     "element-ui": "^1.3.3",
