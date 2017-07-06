@@ -19,5 +19,5 @@ $ composer require corecmf/corecmf
 ## Usage
 安装完成后需要在config/app.php中注册服务提供者到providers数组：
 ```
-Zizaco\Entrust\EntrustServiceProvider::class,
+CoreCMF\corecmf\CorecmfServiceProvider::class,
 ```
