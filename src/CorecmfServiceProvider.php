@@ -48,7 +48,7 @@ class CorecmfServiceProvider extends ServiceProvider
     }
     public function registerProviders()
     {
-        $providers = config('core.providers');
+        $providers = config('corecmf.providers');
         foreach ($providers as $provider) {
             $this->app->register($provider);
         }
