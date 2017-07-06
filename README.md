@@ -21,3 +21,7 @@ $ composer require corecmf/corecmf
 ```
 CoreCMF\corecmf\CorecmfServiceProvider::class,
 ```
+##install
+```
+php artisan corecmf:install
+```
