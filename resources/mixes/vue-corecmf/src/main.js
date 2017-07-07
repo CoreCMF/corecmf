@@ -1,7 +1,8 @@
 import Vue from 'vue'
 import {App, router, store} from 'builder-vue'
-import ElementUI from 'element-ui'
+import CoreCmf from './components'
 import BuilderVueElement from 'builder-vue-element'
+import ElementUI from 'element-ui'
 window.Vue = Vue
 window.axios = require('axios')
 
@@ -10,8 +11,9 @@ window.axios.defaults.headers.common = {
   'X-Requested-With': 'XMLHttpRequest'
 }
 
-Vue.use(ElementUI)
+Vue.use(CoreCmf)
 Vue.use(BuilderVueElement)
+Vue.use(ElementUI)
 
 /* 设置api通信url */
 store.state.apiUrl = window.config.apiUrl

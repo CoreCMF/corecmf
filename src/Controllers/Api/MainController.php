@@ -22,7 +22,7 @@ class MainController extends Controller
           'name'  =>  'api.install',
           'apiUrl'  =>  route('api.install.index'),
           'children'  =>  null,
-          'component' =>  '<corecmf-index/>'
+          'component' =>  '<corecmf-install/>'
         ]);
 
         return $builderMain->response();
