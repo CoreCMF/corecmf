@@ -25,6 +25,7 @@ body{
   height:100%;
 }
 .install-item{
-  margin-bottom: 6.18%;
+  margin-top: 6.18%;
+  width: 80.9%;
 }
 </style>
