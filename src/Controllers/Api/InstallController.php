@@ -22,7 +22,8 @@ class InstallController extends Controller
               ->apiUrl('submit',route('api.install.index'))
               ->config('formStyle',['padding'=>'20px 10px' ])
               ->config('labelWidth','0')
-              ->config('formReset',['style'=> ['display'=>'none'] ]);
+              ->config('formReset',['hidden'=>true ])
+              ->config('formSubmit',[ 'name'=>'下一步', 'style'=> ['width'=>'38.2%'] ]);
       switch ($steps) {
         case 0:
           $this->steps0();
@@ -73,26 +74,57 @@ class InstallController extends Controller
     public function steps1(){
         $this->builderForm
              ->item(['name' => 'agreement',  'type' => 'scrollbar', 'value' => config('corecmf.agreement'),])
-             ->item(['name' => 'password',   'type' => 'password',    'placeholder' => '1']);
+             ->item(['name' => 'password',   'type' => 'password',    'placeholder' => '2'])
+             ->item(['name' => 'steps','type' => 'hidden','value' => 2,])
+             ->config('formPrevious',[
+               'name'=>'上一步',
+               'value'=>'steps',
+               'hidden'=>false,
+               'style'=> ['width'=>'38.2%']
+             ]);
     }
     public function steps2(){
         $this->builderForm
              ->item(['name' => 'agreement',  'type' => 'scrollbar', 'value' => config('corecmf.agreement'),])
-             ->item(['name' => 'password',   'type' => 'password',    'placeholder' => '2']);
+             ->item(['name' => 'password',   'type' => 'password',    'placeholder' => '3'])
+             ->item(['name' => 'steps','type' => 'hidden','value' => 3,]) ->config('formPrevious',[
+                'name'=>'上一步',
+                'value'=>'steps',
+                'hidden'=>false,
+                'style'=> ['width'=>'38.2%']
+              ]);
     }
     public function steps3(){
         $this->builderForm
              ->item(['name' => 'agreement',  'type' => 'scrollbar', 'value' => config('corecmf.agreement'),])
-             ->item(['name' => 'password',   'type' => 'password',    'placeholder' => '3']);
+             ->item(['name' => 'password',   'type' => 'password',    'placeholder' => '3'])
+             ->item(['name' => 'steps','type' => 'hidden','value' => 4,]) ->config('formPrevious',[
+                'name'=>'上一步',
+                'value'=>'steps',
+                'hidden'=>false,
+                'style'=> ['width'=>'38.2%']
+              ]);
     }
     public function steps4(){
         $this->builderForm
              ->item(['name' => 'agreement',  'type' => 'scrollbar', 'value' => config('corecmf.agreement'),])
-             ->item(['name' => 'password',   'type' => 'password',    'placeholder' => '4']);
+             ->item(['name' => 'password',   'type' => 'password',    'placeholder' => '4'])
+             ->item(['name' => 'steps','type' => 'hidden','value' => 5,]) ->config('formPrevious',[
+                'name'=>'上一步',
+                'value'=>'steps',
+                'hidden'=>false,
+                'style'=> ['width'=>'38.2%']
+              ]);
     }
     public function steps5(){
         $this->builderForm
              ->item(['name' => 'agreement',  'type' => 'scrollbar', 'value' => config('corecmf.agreement'),])
-             ->item(['name' => 'password',   'type' => 'password',    'placeholder' => '5']);
+             ->item(['name' => 'password',   'type' => 'password',    'placeholder' => '5']) ->config('formPrevious',[
+                'name'=>'上一步',
+                'value'=>'steps',
+                'hidden'=>false,
+                'style'=> ['width'=>'38.2%']
+              ])
+              ->config('formSubmit',[ 'hidden'=>false ]);
     }
 }
