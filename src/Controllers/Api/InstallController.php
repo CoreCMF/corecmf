@@ -23,6 +23,12 @@ class InstallController extends Controller
               ->config('formStyle',['padding'=>'20px 10px' ])
               ->config('labelWidth','0')
               ->config('formReset',['hidden'=>true ])
+              ->config('formPrevious',[
+                'name'=>'上一步',
+                'value'=>'steps',
+                'hidden'=>false,
+                'style'=> ['width'=>'38.2%']
+              ])
               ->config('formSubmit',[ 'name'=>'下一步', 'style'=> ['width'=>'38.2%'] ]);
       switch ($steps) {
         case 0:
@@ -39,9 +45,6 @@ class InstallController extends Controller
           break;
         case 4:
           $this->steps4();
-          break;
-        case 5:
-          $this->steps5();
           break;
       }
       $html = resolve('builderHtml')
@@ -69,62 +72,32 @@ class InstallController extends Controller
                ]
              ])
              ->item(['name' => 'steps','type' => 'hidden','value' => 1,])
+             ->config('formPrevious',['hidden'=>true])
              ->config('formSubmit',[ 'name'=>'安装', 'disabled'=> true, 'style'=> ['width'=>'38.2%'] ]);
     }
     public function steps1(){
         $this->builderForm
              ->item(['name' => 'agreement',  'type' => 'scrollbar', 'value' => config('corecmf.agreement'),])
              ->item(['name' => 'password',   'type' => 'password',    'placeholder' => '2'])
-             ->item(['name' => 'steps','type' => 'hidden','value' => 2,])
-             ->config('formPrevious',[
-               'name'=>'上一步',
-               'value'=>'steps',
-               'hidden'=>false,
-               'style'=> ['width'=>'38.2%']
-             ]);
+             ->item(['name' => 'steps','type' => 'hidden','value' => 2,]);
     }
     public function steps2(){
         $this->builderForm
              ->item(['name' => 'agreement',  'type' => 'scrollbar', 'value' => config('corecmf.agreement'),])
              ->item(['name' => 'password',   'type' => 'password',    'placeholder' => '3'])
-             ->item(['name' => 'steps','type' => 'hidden','value' => 3,]) ->config('formPrevious',[
-                'name'=>'上一步',
-                'value'=>'steps',
-                'hidden'=>false,
-                'style'=> ['width'=>'38.2%']
-              ]);
+             ->item(['name' => 'steps','type' => 'hidden','value' => 3,]);
     }
     public function steps3(){
         $this->builderForm
              ->item(['name' => 'agreement',  'type' => 'scrollbar', 'value' => config('corecmf.agreement'),])
              ->item(['name' => 'password',   'type' => 'password',    'placeholder' => '3'])
-             ->item(['name' => 'steps','type' => 'hidden','value' => 4,]) ->config('formPrevious',[
-                'name'=>'上一步',
-                'value'=>'steps',
-                'hidden'=>false,
-                'style'=> ['width'=>'38.2%']
-              ]);
+             ->item(['name' => 'steps','type' => 'hidden','value' => 4,]);
     }
     public function steps4(){
         $this->builderForm
              ->item(['name' => 'agreement',  'type' => 'scrollbar', 'value' => config('corecmf.agreement'),])
              ->item(['name' => 'password',   'type' => 'password',    'placeholder' => '4'])
-             ->item(['name' => 'steps','type' => 'hidden','value' => 5,]) ->config('formPrevious',[
-                'name'=>'上一步',
-                'value'=>'steps',
-                'hidden'=>false,
-                'style'=> ['width'=>'38.2%']
-              ]);
-    }
-    public function steps5(){
-        $this->builderForm
-             ->item(['name' => 'agreement',  'type' => 'scrollbar', 'value' => config('corecmf.agreement'),])
-             ->item(['name' => 'password',   'type' => 'password',    'placeholder' => '5']) ->config('formPrevious',[
-                'name'=>'上一步',
-                'value'=>'steps',
-                'hidden'=>false,
-                'style'=> ['width'=>'38.2%']
-              ])
-              ->config('formSubmit',[ 'hidden'=>false ]);
+             ->item(['name' => 'steps','type' => 'hidden','value' => 5,])
+             ->config('formSubmit',[ 'hidden'=>true ]);
     }
 }
