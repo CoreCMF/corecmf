@@ -46,20 +46,10 @@ class CorecmfServiceProvider extends ServiceProvider
         });
         $this->app->singleton(Prerequisite::class, function () {
             return new Composite(
-              new PhpVersion('5.6.28'),
-              new PhpExtension([
-                'dom',
-                'fileinfo',
-                'gd',
-                'json',
-                'mbstring',
-                'openssl',
-                'pdo_mysql',
-              ]),
-              new WritablePath([
-                public_path(),
-                storage_path(),
-              ]));
+              new PhpVersion(config('corecmf.prerequisite.phpVersion')),
+              new PhpExtension(config('corecmf.prerequisite.phpExtension')),
+              new WritablePath(config('corecmf.prerequisite.writablePath'))
+            );
         });
     }
 

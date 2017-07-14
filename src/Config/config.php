@@ -6,6 +6,23 @@ return [
 	'providers' => [
 			CoreCMF\core\CoreServiceProvider::class,  //CoreServiceProvider
 	],
+	//安装检测 php 版本 php扩展 目录权限
+	'prerequisite' => [
+		'phpVersion' => '5.6.28',
+		'phpExtension' => [
+			'dom',
+			'fileinfo',
+			'gd',
+			'json',
+			'mbstring',
+			'openssl',
+			'pdo_mysql',
+		],
+		'writablePath' => [
+			public_path(),
+			storage_path(),
+		]
+	],
 	'agreement' => '
 			<p>Apache 许可协议, 版本 2.0</p>
 			<p>Apache License</p>

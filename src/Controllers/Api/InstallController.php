@@ -28,11 +28,15 @@ class InstallController extends Controller
               ->config('formReset',['hidden'=>true ])
               ->config('formPrevious',[
                 'name'=>'上一步',
-                'value'=>'steps',
+                'steps'=>'steps',
                 'hidden'=>false,
                 'style'=> ['width'=>'38.2%']
               ])
-              ->config('formSubmit',[ 'name'=>'下一步', 'style'=> ['width'=>'38.2%'] ]);
+              ->config('formSubmit',[
+                'name'=>'下一步',
+                'steps'=>'steps',
+                'style'=> ['width'=>'38.2%']
+              ]);
       switch ($steps) {
         case 0:
           $this->steps0();
@@ -75,7 +79,12 @@ class InstallController extends Controller
                ]
              ])
              ->config('formPrevious',['hidden'=>true])
-             ->config('formSubmit',[ 'name'=>'安装', 'disabled'=> true, 'style'=> ['width'=>'38.2%'] ]);
+             ->config('formSubmit',[
+               'name'=>'安装',
+               'disabled'=> true,
+               'steps'=>'steps',
+               'style'=> ['width'=>'38.2%']
+             ]);
     }
     public function steps1(){
         $this->prerequisite->check();
@@ -89,8 +98,9 @@ class InstallController extends Controller
     }
     public function steps2(){
         $this->builderForm
+             ->config('labelWidth','100px')
              ->item(['name' => 'agreement',  'type' => 'scrollbar', 'value' => config('corecmf.agreement'),])
-             ->item(['name' => 'password',   'type' => 'password',    'placeholder' => '3']);
+             ->item(['name' => 'sitename',   'type' => 'text', 'label'=>'网站名称',  'placeholder' => '请输入网站名称']);
     }
     public function steps3(){
         $this->builderForm
