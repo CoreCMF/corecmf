@@ -5,20 +5,23 @@ namespace CoreCMF\corecmf\Controllers\Api;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use CoreCMF\core\Support\Http\Request as CoreRequest;
+use CoreCMF\core\Support\Contracts\Prerequisite;
 
 class InstallController extends Controller
 {
-    private $builderForm;
+    protected $builderForm;
+    protected $prerequisite;
 
-    public function __construct()
+    public function __construct(Prerequisite $prerequisite)
     {
         $this->builderForm = resolve('builderForm');
+        $this->prerequisite = $prerequisite;
     }
     public function index(CoreRequest $request)
     {
       $steps        = $request->get('steps',0);
       $stepsTitle = ['用户协议','检测环境','数据库设置','账户设置','安装完成'];
-      $this->builderForm->item(['name' => 'steps',      'type' => 'steps',   'title'=>$stepsTitle, 'active'=>$steps])
+      $this->builderForm->item(['name' => 'steps',      'type' => 'steps',   'title'=>$stepsTitle, 'value'=>$steps])
               ->apiUrl('submit',route('api.install.index'))
               ->config('formStyle',['padding'=>'20px 10px' ])
               ->config('labelWidth','0')
@@ -71,33 +74,33 @@ class InstallController extends Controller
                  ]
                ]
              ])
-             ->item(['name' => 'steps','type' => 'hidden','value' => 1,])
              ->config('formPrevious',['hidden'=>true])
              ->config('formSubmit',[ 'name'=>'安装', 'disabled'=> true, 'style'=> ['width'=>'38.2%'] ]);
     }
     public function steps1(){
-        $this->builderForm
-             ->item(['name' => 'agreement',  'type' => 'scrollbar', 'value' => config('corecmf.agreement'),])
-             ->item(['name' => 'password',   'type' => 'password',    'placeholder' => '2'])
-             ->item(['name' => 'steps','type' => 'hidden','value' => 2,]);
+        $this->prerequisite->check();
+        $messages = $this->prerequisite->getMessages();
+        foreach ($messages as $key => $message) {
+          $this->builderForm->item(['name' => 'alert'.$key,  'type' => 'alert', 'title' => $message['message'], 'itemType'=>$message['type']]);
+          if ($message['type'] == 'error') {
+            $this->builderForm->config('formSubmit',[ 'name'=>'重新检测', 'style'=> ['width'=>'38.2%'] ]);
+          }
+        }
     }
     public function steps2(){
         $this->builderForm
              ->item(['name' => 'agreement',  'type' => 'scrollbar', 'value' => config('corecmf.agreement'),])
-             ->item(['name' => 'password',   'type' => 'password',    'placeholder' => '3'])
-             ->item(['name' => 'steps','type' => 'hidden','value' => 3,]);
+             ->item(['name' => 'password',   'type' => 'password',    'placeholder' => '3']);
     }
     public function steps3(){
         $this->builderForm
              ->item(['name' => 'agreement',  'type' => 'scrollbar', 'value' => config('corecmf.agreement'),])
-             ->item(['name' => 'password',   'type' => 'password',    'placeholder' => '3'])
-             ->item(['name' => 'steps','type' => 'hidden','value' => 4,]);
+             ->item(['name' => 'password',   'type' => 'password',    'placeholder' => '3']);
     }
     public function steps4(){
         $this->builderForm
              ->item(['name' => 'agreement',  'type' => 'scrollbar', 'value' => config('corecmf.agreement'),])
              ->item(['name' => 'password',   'type' => 'password',    'placeholder' => '4'])
-             ->item(['name' => 'steps','type' => 'hidden','value' => 5,])
              ->config('formSubmit',[ 'hidden'=>true ]);
     }
 }

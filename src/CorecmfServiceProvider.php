@@ -4,6 +4,11 @@ namespace CoreCMF\corecmf;
 
 use Illuminate\Support\ServiceProvider;
 use CoreCMF\core\Support\Builder\Main as builderCorecmfMain;
+use CoreCMF\core\Support\Contracts\Prerequisite;
+use CoreCMF\core\Support\Prerequisite\Composite;
+use CoreCMF\core\Support\Prerequisite\PhpExtension;
+use CoreCMF\core\Support\Prerequisite\PhpVersion;
+use CoreCMF\core\Support\Prerequisite\WritablePath;
 
 class CorecmfServiceProvider extends ServiceProvider
 {
@@ -38,6 +43,23 @@ class CorecmfServiceProvider extends ServiceProvider
     {
         $this->app->singleton('builderCorecmfMain', function () {
             return new builderCorecmfMain();
+        });
+        $this->app->singleton(Prerequisite::class, function () {
+            return new Composite(
+              new PhpVersion('5.6.28'),
+              new PhpExtension([
+                'dom',
+                'fileinfo',
+                'gd',
+                'json',
+                'mbstring',
+                'openssl',
+                'pdo_mysql',
+              ]),
+              new WritablePath([
+                public_path(),
+                storage_path(),
+              ]));
         });
     }
 
