@@ -8,15 +8,18 @@ return [
 	],
 	//安装检测 php 版本 php扩展 目录权限
 	'prerequisite' => [
-		'phpVersion' => '5.6.28',
+		'phpVersion' => '5.6.4',
 		'phpExtension' => [
-			'dom',
-			'fileinfo',
-			'gd',
-			'json',
-			'mbstring',
-			'openssl',
-			'pdo_mysql',
+			'DOM',
+			'FileInfo',
+			'GD',
+			'Json',
+			'Mbstring',
+			'OpenSSL',
+			'PDO',
+			'PDO_mysql',
+			'XML',
+			'Tokenizer'
 		],
 		'writablePath' => [
 			public_path(),
