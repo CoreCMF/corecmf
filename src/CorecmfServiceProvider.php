@@ -12,6 +12,10 @@ use CoreCMF\core\Support\Prerequisite\WritablePath;
 
 class CorecmfServiceProvider extends ServiceProvider
 {
+    protected $commands = [
+        'CoreCMF\corecmf\Commands\InstallCommand',
+        'CoreCMF\corecmf\Commands\UninstallCommand',
+    ];
     /**
      * Perform post-registration booting of services.
      *
@@ -19,6 +23,8 @@ class CorecmfServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        //加载artisan commands
+        $this->commands($this->commands);
         // 加载配置
         $this->mergeConfigFrom(__DIR__.'/Config/config.php', 'corecmf');
         //配置路由
