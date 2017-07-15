@@ -52,7 +52,7 @@ class InstallCommand extends Command
           $this->setDataCommands();
         }
         $this->setEnv();
-        $this->instalModule();
+        $this->installModule();
     }
     public function setEnv()
     {
@@ -78,9 +78,10 @@ class InstallCommand extends Command
             $this->install->setEnv('DB_PASSWORD', $this->data->get('database_password'))
          );
     }
-    public function instalModule()
+    public function installModule()
     {
-
+       $this->install->installModule('core');
+       $this->install->installModule('admin');
     }
     public function setDataCommands()
     {
