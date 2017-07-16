@@ -125,7 +125,7 @@ class InstallCommand extends Command
      *
      * @param array $data
      */
-    public function setDataController(array $data)
+    public function setSqlController(array $data)
     {
         $this->data->put('driver', $data['database_engine']);
         $this->data->put('database_host', $data['database_host']);
@@ -133,9 +133,9 @@ class InstallCommand extends Command
         $this->data->put('database_username', $data['database_username']);
         $this->data->put('database_password', $data['database_password']);
         $this->data->put('database_port', $data['database_port']);
-        $this->data->put('admin_account', $data['account_username']);
-        $this->data->put('admin_password', $data['account_password']);
-        $this->data->put('admin_email', $data['account_mail']);
+        // $this->data->put('admin_account', $data['account_username']);
+        // $this->data->put('admin_password', $data['account_password']);
+        // $this->data->put('admin_email', $data['account_mail']);
         $this->data->put('website', $data['sitename']);
         $this->isDataSetted = true;
     }

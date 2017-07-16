@@ -6,16 +6,21 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use CoreCMF\core\Support\Http\Request as CoreRequest;
 use CoreCMF\core\Support\Contracts\Prerequisite;
+use CoreCMF\core\Support\Commands\Install;
 
 class InstallController extends Controller
 {
     protected $builderForm;
     protected $prerequisite;
+    protected $install;
+    protected $request;
 
-    public function __construct(Prerequisite $prerequisite)
+    public function __construct(Prerequisite $prerequisite, Install $install,Request $request)
     {
         $this->builderForm = resolve('builderForm');
         $this->prerequisite = $prerequisite;
+        $this->install = $install;
+        $this->request = $request;
     }
     public function index(CoreRequest $request)
     {
@@ -99,10 +104,60 @@ class InstallController extends Controller
     public function steps2(){
         $this->builderForm
              ->config('labelWidth','100px')
-             ->item(['name' => 'agreement',  'type' => 'scrollbar', 'value' => config('corecmf.agreement'),])
-             ->item(['name' => 'sitename',   'type' => 'text', 'label'=>'网站名称',  'placeholder' => '请输入网站名称']);
+             ->item([
+               'name' => 'sitename',
+               'type' => 'text',
+               'label'=>'网站名称',
+               'placeholder' => '请输入网站名称',
+               'style' => ['max-width'=>'300px']
+             ])
+             ->item([
+               'name' => 'database_engine',
+               'type' => 'radio',
+               'label'=>'数据库引擎',
+               'value' => 'mysql',
+               'options' => ['mysql'=>'MySql', 'pgsql'=>'PostgreSQL', 'sqlite'=>'SQLite3',]
+             ])
+             ->item([
+               'name' => 'database_host',
+               'type' => 'text',
+               'label'=>'数据库地址',
+               'value' => 'localhost',
+               'style' => ['max-width'=>'250px']
+             ])
+             ->item([
+               'name' => 'database_port',
+               'type' => 'text',
+               'label'=>'数据库端口',
+               'value' => '3306',
+               'style' => ['max-width'=>'100px']
+             ])
+             ->item([
+               'name' => 'database_name',
+               'type' => 'text',
+               'label'=>'数据库名称',
+               'placeholder' => '请输入数据库名称',
+               'style' => ['max-width'=>'250px']
+             ])
+             ->item([
+               'name' => 'database_username',
+               'type' => 'text',
+               'label'=>'数据库用户名',
+               'placeholder' => '请输入数据库用户名',
+               'style' => ['max-width'=>'200px']
+             ])
+             ->item([
+               'name' => 'database_password',
+               'type' => 'text',
+               'label'=>'数据库密码',
+               'placeholder' => '请输入数据库密码',
+               'style' => ['max-width'=>'200px']
+             ]);
     }
     public function steps3(){
+        $command = $this->install->getCommand('corecmf:install');
+        $command->setSqlController($this->request->all());
+        $command->setEnv();
         $this->builderForm
              ->item(['name' => 'agreement',  'type' => 'scrollbar', 'value' => config('corecmf.agreement'),])
              ->item(['name' => 'password',   'type' => 'password',    'placeholder' => '3']);
