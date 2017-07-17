@@ -64,6 +64,7 @@ class InstallCommand extends Command
         $this->install->setEnv('DB_DATABASE', $this->data->get('database'));
         $this->install->setEnv('DB_USERNAME', $this->data->get('database_username'));
         $this->install->setEnv('DB_PASSWORD', $this->data->get('database_password'));
+        return true;
     }
     public function installModule()
     {

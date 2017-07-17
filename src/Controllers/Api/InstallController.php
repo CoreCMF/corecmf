@@ -11,6 +11,7 @@ use CoreCMF\core\Support\Commands\Install;
 class InstallController extends Controller
 {
     protected $builderForm;
+    protected $builderHtml;
     protected $prerequisite;
     protected $install;
     protected $request;
@@ -18,6 +19,7 @@ class InstallController extends Controller
     public function __construct(Prerequisite $prerequisite, Install $install,Request $request)
     {
         $this->builderForm = resolve('builderForm');
+        $this->builderHtml = resolve('builderHtml');
         $this->prerequisite = $prerequisite;
         $this->install = $install;
         $this->request = $request;
@@ -59,11 +61,10 @@ class InstallController extends Controller
           $this->steps4();
           break;
       }
-      $html = resolve('builderHtml')
-                ->title('系统安装')
-                ->item($this->builderForm)
-                ->config('refresh',false)
-                ->response();
+      $html = $this->builderHtml->title('系统安装')
+                        ->item($this->builderForm)
+                        ->config('refresh',false)
+                        ->response();
       return $html;
     }
     public function steps0(){
@@ -174,7 +175,13 @@ class InstallController extends Controller
         ]);
         $command = $this->install->getCommand('corecmf:install');
         $command->setSqlController($this->request->all());
-        $command->setEnv();
+        $setEnv = $command->setEnv();
+        if ($setEnv) {
+            $this->builderHtml->message([
+                        'message'   => '数据库设置成功!',
+                        'type'      => 'success',
+                    ]);
+        }
         $this->builderForm
              ->item(['name' => 'agreement',  'type' => 'scrollbar', 'value' => config('corecmf.agreement'),])
              ->item(['name' => 'password',   'type' => 'password',    'placeholder' => '3']);
