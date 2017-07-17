@@ -52,36 +52,23 @@ class InstallCommand extends Command
           $this->setDataCommands();
         }
         $this->setEnv();
+        $this->info('Set .env Success');
         $this->installModule();
     }
     public function setEnv()
     {
-         $this->info(
-            $this->install->setEnv('APP_NAME', $this->data->get('website'))
-         );
-         $this->info(
-            $this->install->setEnv('DB_CONNECTION', $this->data->get('driver'))
-         );
-         $this->info(
-            $this->install->setEnv('DB_HOST', $this->data->get('database_host'))
-         );
-         $this->info(
-            $this->install->setEnv('DB_PORT', $this->data->get('database_port'))
-         );
-         $this->info(
-            $this->install->setEnv('DB_DATABASE', $this->data->get('database'))
-         );
-         $this->info(
-            $this->install->setEnv('DB_USERNAME', $this->data->get('database_username'))
-         );
-         $this->info(
-            $this->install->setEnv('DB_PASSWORD', $this->data->get('database_password'))
-         );
+        $this->install->setEnv('APP_NAME', $this->data->get('website'));
+        $this->install->setEnv('DB_CONNECTION', $this->data->get('driver'));
+        $this->install->setEnv('DB_HOST', $this->data->get('database_host'));
+        $this->install->setEnv('DB_PORT', $this->data->get('database_port'));
+        $this->install->setEnv('DB_DATABASE', $this->data->get('database'));
+        $this->install->setEnv('DB_USERNAME', $this->data->get('database_username'));
+        $this->install->setEnv('DB_PASSWORD', $this->data->get('database_password'));
     }
     public function installModule()
     {
-       $this->install->installModule('core');
-       $this->install->installModule('admin');
+        $this->install->installModule('core');
+        $this->install->installModule('admin');
     }
     public function setDataCommands()
     {
