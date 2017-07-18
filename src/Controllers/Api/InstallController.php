@@ -103,7 +103,31 @@ class InstallController extends Controller
         }
     }
     public function steps2(){
+        $rules = [
+            'sitename'=> [
+                ['required' => true,  'message' => '请输入网站名称', 'trigger'=> 'blur']
+            ],
+            'database_engine'=> [
+                [ 'required'=> true, 'message'=> '请选择数据库引擎', 'trigger'=> 'blur' ]
+            ],
+            'database_host'=> [
+                ['required' => true,  'message' => '请输入数据库地址', 'trigger'=> 'blur']
+            ],
+            'database_port'=> [
+                [ 'required'=> true, 'message'=> '请输入数据库端口', 'trigger'=> 'blur' ]
+            ],
+            'database_name'=> [
+                ['required' => true,  'message' => '请输入数据库名称', 'trigger'=> 'blur']
+            ],
+            'database_username'=> [
+                [ 'required'=> true, 'message'=> '请输入数据库用户名', 'trigger'=> 'blur' ]
+            ],
+            'database_password'=> [
+                ['required' => true,  'message' => '请输入数据库密码', 'trigger'=> 'blur']
+            ],
+        ];
         $this->builderForm
+             ->rules($rules)
              ->config('labelWidth','100px')
              ->item([
                'name' => 'sitename',
