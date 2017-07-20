@@ -180,23 +180,93 @@ class InstallController extends Controller
              ]);
     }
     public function steps3(){
-        $this->validate($this->request, [
-            'database_engine'   => 'required',
-            'database_host'     => 'required',
-            'database_port'     => 'required',
-            'database_name'     => 'required',
-            'database_password' => 'required',
-            'database_username' => 'required',
-            'sitename'          => 'required',
-        ], [
-            'database_engine.required'   => '必须选择数据库引擎',
-            'database_host.required'     => '必须填写数据库地址',
-            'database_port.required'     => '必须填写数据库端口',
-            'database_name.required'     => '必须填写数据库名称',
-            'database_password.required' => '必须填写数据库密码',
-            'database_username.required' => '必须填写数据库用户名',
-            'sitename.required'          => '必须填写网站名称',
-        ]);
+        $this->databaseCheck();
+        $this->builderForm
+              ->item([
+                'name' => 'sitename',
+                'type' => 'text',
+                'label'=>'网站名称',
+                'placeholder' => '请输入网站名称',
+                'style' => ['max-width'=>'300px']
+              ])
+              ->item(['name' => 'password',   'type' => 'password',    'placeholder' => '3']);
+    }
+    public function steps4(){
+        $this->builderForm
+             ->item(['name' => 'agreement',  'type' => 'scrollbar', 'value' => config('corecmf.agreement'),])
+             ->item(['name' => 'password',   'type' => 'password',    'placeholder' => '4'])
+             ->config('formSubmit',[ 'hidden'=>true ]);
+    }
+    public function databaseCheck()
+    {
+      if ($this->request->input('database_engine') != 'sqlite') {
+          $this->repository->set('database', [
+              'fetch'       => PDO::FETCH_CLASS,
+              'default'     => $this->request->input('database_engine'),
+              'connections' => [],
+              'redis'       => [],
+          ]);
+          $sql = '';
+          switch ($this->request->input('database_engine')) {
+              case 'mysql':
+                  $this->repository->set('database.connections.mysql', [
+                      'driver'    => 'mysql',
+                      'host'      => $this->request->input('database_host'),
+                      'database'  => $this->request->input('database_name'),
+                      'username'  => $this->request->input('database_username'),
+                      'password'  => $this->request->input('database_password'),
+                      'charset'   => 'utf8',
+                      'collation' => 'utf8_unicode_ci',
+                      'prefix'    => $this->request->input('database_prefix'),
+                      'port'      => $this->request->input('database_port') ?: 3306,
+                      'strict'    => true,
+                      'engine'    => null,
+                  ]);
+                  $sql = 'show tables';
+                  break;
+              case 'pgsql':
+                  $this->repository->set('database.connections.pgsql', [
+                      'driver'   => 'pgsql',
+                      'host'     => $this->request->input('database_host'),
+                      'database' => $this->request->input('database_name'),
+                      'username' => $this->request->input('database_username'),
+                      'password' => $this->request->input('database_password'),
+                      'charset'  => 'utf8',
+                      'prefix'   => $this->request->input('database_prefix'),
+                      'port'     => $this->request->input('database_port') ?: 5432,
+                      'schema'   => 'public',
+                  ]);
+                  $sql = "select * from pg_tables where schemaname='public'";
+                  break;
+          }
+          try {
+              $results = collect($this->container->make('db')->select($sql));
+              if ($results->count()) {
+                  $this->withCode(500)->withError('数据库[' . $this->request->input('database_name') . ']已经存在数据表，请先清空数据库！');
+              } else {
+                  $this->withCode(200)->withMessage('');
+              }
+          } catch (Exception $exception) {
+              switch ($exception->getCode()) {
+                  case 7:
+                      $error = '数据库账号或密码错误，或数据库不存在！';
+                      break;
+                  case 1045:
+                      $error = '数据库账号或密码错误！';
+                      break;
+                  case 1049:
+                      $error = '数据库[' . $this->request->input('database_name') . ']不存在，请先创建数据库！';
+                      break;
+                  default:
+                      $error = array_merge((array)$exception->getCode(), (array)$exception->getMessage());
+                      break;
+              }
+              $this->withCode(500)->withData($exception->getTrace())->withError($error);
+          }
+      }
+    }
+    public function databaseInstall()
+    {
         $command = $this->install->getCommand('corecmf:install');
         $command->setSqlController($this->request->all());
         $setEnv = $command->setEnv();
@@ -206,14 +276,5 @@ class InstallController extends Controller
                         'type'      => 'success',
                     ]);
         }
-        $this->builderForm
-             ->item(['name' => 'agreement',  'type' => 'scrollbar', 'value' => config('corecmf.agreement'),])
-             ->item(['name' => 'password',   'type' => 'password',    'placeholder' => '3']);
-    }
-    public function steps4(){
-        $this->builderForm
-             ->item(['name' => 'agreement',  'type' => 'scrollbar', 'value' => config('corecmf.agreement'),])
-             ->item(['name' => 'password',   'type' => 'password',    'placeholder' => '4'])
-             ->config('formSubmit',[ 'hidden'=>true ]);
     }
 }
