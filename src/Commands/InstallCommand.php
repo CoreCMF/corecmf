@@ -88,6 +88,7 @@ class InstallCommand extends Command
         $this->data->put('admin_account', $this->ask('管理员帐号：'));
         $this->data->put('admin_password', $this->ask('管理员密码：'));
         $this->data->put('admin_email', $this->ask('电子邮箱：'));
+        $this->data->put('admin_mobile', $this->ask('管理员手机'));
         $this->data->put('website', $this->ask('网站标题：'));
         $this->info('所填写的信息是：');
         $this->info('数据库引擎：' . $this->data->get('driver'));
@@ -105,6 +106,7 @@ class InstallCommand extends Command
         $this->info('管理员帐号：' . $this->data->get('admin_account'));
         $this->info('管理员密码：' . $this->data->get('admin_password'));
         $this->info('电子邮箱：' . $this->data->get('admin_email'));
+        $this->info('管理员手机：' . $this->data->get('admin_mobile'));
         $this->info('网站标题：' . $this->data->get('website'));
         $this->isDataSetted = true;
     }
