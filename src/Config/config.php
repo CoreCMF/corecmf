@@ -4,6 +4,7 @@ return [
 	'description' => 'corecmf',
 	'author' => 'bigRocs',
 	'providers' => [
+			CoreCMF\admin\AdminServiceProvider::class,  //admin
 			CoreCMF\core\CoreServiceProvider::class,  //CoreServiceProvider
 	],
 	//安装检测 php 版本 php扩展 目录权限
