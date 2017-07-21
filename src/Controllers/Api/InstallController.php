@@ -2,7 +2,10 @@
 
 namespace CoreCMF\corecmf\Controllers\Api;
 
+use Exception;
 use Illuminate\Http\Request;
+use Illuminate\Container\Container;
+use Illuminate\Contracts\Config\Repository;
 use App\Http\Controllers\Controller;
 use CoreCMF\core\Support\Http\Request as CoreRequest;
 use CoreCMF\core\Support\Contracts\Prerequisite;
@@ -15,18 +18,28 @@ class InstallController extends Controller
     protected $prerequisite;
     protected $install;
     protected $request;
+    protected $container;
+    protected $repository;
 
-    public function __construct(Prerequisite $prerequisite, Install $install,Request $request)
+    public function __construct(
+      Prerequisite $prerequisite,
+      Install $install,
+      Request $request,
+      Container $container,
+      Repository $repository
+    )
     {
-        $this->builderForm = resolve('builderForm');
-        $this->builderHtml = resolve('builderHtml');
         $this->prerequisite = $prerequisite;
         $this->install = $install;
         $this->request = $request;
+        $this->container = $container;
+        $this->repository = $repository;
+        $this->builderForm = $this->container->make('builderForm');
+        $this->builderHtml = $this->container->make('builderHtml');
     }
     public function index(CoreRequest $request)
     {
-      $steps        = $request->get('steps',0);
+      $steps = $this->eventHandler($request);
       $stepsTitle = ['用户协议','检测环境','数据库设置','账户设置','安装完成'];
       $this->builderForm->item(['name' => 'steps',      'type' => 'steps',   'title'=>$stepsTitle, 'value'=>$steps])
               ->apiUrl('submit',route('api.install.index'))
@@ -128,7 +141,7 @@ class InstallController extends Controller
         ];
         $this->builderForm
              ->rules($rules)
-             ->config('labelWidth','100px')
+             ->config('labelWidth','120px')
              ->item([
                'name' => 'sitename',
                'type' => 'text',
@@ -180,16 +193,55 @@ class InstallController extends Controller
              ]);
     }
     public function steps3(){
-        $this->databaseCheck();
-        $this->builderForm
+      $rules = [
+          'admin_account'=> [
+              ['required' => true,  'message' => '请输入管理员账号', 'trigger'=> 'blur'],
+              [ 'min' => 4, 'max' => 16, 'message' => '长度在 4 到 16 个字符', 'trigger' => 'blur' ]
+          ],
+          'admin_password'=> [
+              [ 'required'=> true, 'message'=> '请输入管理员密码', 'trigger'=> 'blur' ],
+              [ 'min' => 6, 'max' => 16, 'message' => '长度在 6 到 16 个字符', 'trigger' => 'blur' ]
+          ],
+          'admin_email'=> [
+              ['required' => true,  'message' => '请输入管理员邮箱', 'trigger'=> 'blur'],
+              [ 'type' => 'email', 'message' => '请输入正确的邮箱地址', 'trigger' => 'blur,change' ]
+          ],
+          'admin_mobile'=> [
+              [ 'required'=> true, 'message'=> '请输入管理员手机', 'trigger'=> 'blur' ],
+              [ 'type' => 'email', 'message' => '请输入正确的手机号码', 'trigger' => 'blur,change' ]
+          ],
+      ];
+      $this->builderForm
+              ->rules($rules)
+              ->config('labelWidth','120px')
               ->item([
-                'name' => 'sitename',
+                'name' => 'admin_account',
                 'type' => 'text',
-                'label'=>'网站名称',
-                'placeholder' => '请输入网站名称',
+                'label'=>'管理员账号',
+                'placeholder' => '请输入管理员账号',
                 'style' => ['max-width'=>'300px']
               ])
-              ->item(['name' => 'password',   'type' => 'password',    'placeholder' => '3']);
+              ->item([
+                'name' => 'admin_password',
+                'type' => 'text',
+                'label'=>'管理员密码',
+                'placeholder' => '请输入管理员密码',
+                'style' => ['max-width'=>'300px']
+              ])
+              ->item([
+                'name' => 'admin_email',
+                'type' => 'text',
+                'label'=>'管理员邮箱',
+                'placeholder' => '请输入管理员邮箱',
+                'style' => ['max-width'=>'300px']
+              ])
+              ->item([
+                'name' => 'admin_mobile',
+                'type' => 'text',
+                'label'=>'管理员手机',
+                'placeholder' => '请输入管理员手机',
+                'style' => ['max-width'=>'300px']
+              ]);
     }
     public function steps4(){
         $this->builderForm
@@ -197,15 +249,36 @@ class InstallController extends Controller
              ->item(['name' => 'password',   'type' => 'password',    'placeholder' => '4'])
              ->config('formSubmit',[ 'hidden'=>true ]);
     }
+    public function eventHandler($request)
+    {
+        $steps = $request->get('steps',0);
+        switch ($steps) {
+          case 0:
+            break;
+          case 1:
+            break;
+          case 2:
+            break;
+          case 3:
+            if (!$this->databaseCheck()) {
+                $steps=2;
+            }else{
+                $this->databaseInstall();
+            }
+            break;
+          case 4:
+            $this->steps4();
+            break;
+        }
+        return  $steps;
+    }
+    /**
+     * 数据库配置设置前的检查
+     */
     public function databaseCheck()
     {
       if ($this->request->input('database_engine') != 'sqlite') {
-          $this->repository->set('database', [
-              'fetch'       => PDO::FETCH_CLASS,
-              'default'     => $this->request->input('database_engine'),
-              'connections' => [],
-              'redis'       => [],
-          ]);
+          $this->repository->set('database.default',$this->request->input('database_engine'));
           $sql = '';
           switch ($this->request->input('database_engine')) {
               case 'mysql':
@@ -240,11 +313,11 @@ class InstallController extends Controller
                   break;
           }
           try {
-              $results = collect($this->container->make('db')->select($sql));
+              $results = collect($this->container->make('db')->reconnect()->select($sql));
               if ($results->count()) {
-                  $this->withCode(500)->withError('数据库[' . $this->request->input('database_name') . ']已经存在数据表，请先清空数据库！');
+                  $error = '数据库[' . $this->request->input('database_name') . ']已经存在数据表，请先清空数据库！';
               } else {
-                  $this->withCode(200)->withMessage('');
+                  return true;
               }
           } catch (Exception $exception) {
               switch ($exception->getCode()) {
@@ -261,8 +334,12 @@ class InstallController extends Controller
                       $error = array_merge((array)$exception->getCode(), (array)$exception->getMessage());
                       break;
               }
-              $this->withCode(500)->withData($exception->getTrace())->withError($error);
           }
+          $this->builderHtml->message([
+                    'message'   => $error,
+                    'type'      => 'error',
+                ]);
+          return false;
       }
     }
     public function databaseInstall()
