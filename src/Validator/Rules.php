@@ -6,7 +6,7 @@ use CoreCMF\core\Support\Validator\Rules as coreRules;
 class Rules extends coreRules
 {
     public function admin(){
-        $adminMobile = $this->mobile('请输入管理员手机号码');
+        $this->mobile('请输入管理员手机号码');
         return [
             'admin_account'=> [
                 ['required' => true,  'message' => '请输入管理员账号', 'trigger'=> 'blur'],
@@ -21,7 +21,7 @@ class Rules extends coreRules
                 [ 'type' => 'email', 'message' => '请输入正确的邮箱地址', 'trigger' => 'blur,change' ]
             ],
             'admin_mobile'=> [
-                [ 'required'=> true, 'validator'=> $adminMobile,'trigger'=> 'blur' ]
+                [ 'required'=> true, 'validator'=> $this->mobile,'trigger'=> 'blur' ]
             ],
         ];
     }
