@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use CoreCMF\core\Support\Http\Request as CoreRequest;
 use CoreCMF\core\Support\Contracts\Prerequisite;
 use CoreCMF\core\Support\Commands\Install;
+use CoreCMF\corecmf\Validator\Rules;
 
 class InstallController extends Controller
 {
@@ -20,13 +21,15 @@ class InstallController extends Controller
     protected $request;
     protected $container;
     protected $repository;
+    protected $rules;
 
     public function __construct(
       Prerequisite $prerequisite,
       Install $install,
       Request $request,
       Container $container,
-      Repository $repository
+      Repository $repository,
+      Rules $rules
     )
     {
         $this->prerequisite = $prerequisite;
@@ -34,6 +37,7 @@ class InstallController extends Controller
         $this->request = $request;
         $this->container = $container;
         $this->repository = $repository;
+        $this->rules = $rules;
         $this->builderForm = $this->container->make('builderForm');
         $this->builderHtml = $this->container->make('builderHtml');
     }
@@ -193,26 +197,8 @@ class InstallController extends Controller
              ]);
     }
     public function steps3(){
-      $rules = [
-          'admin_account'=> [
-              ['required' => true,  'message' => '请输入管理员账号', 'trigger'=> 'blur'],
-              [ 'min' => 4, 'max' => 16, 'message' => '长度在 4 到 16 个字符', 'trigger' => 'blur' ]
-          ],
-          'admin_password'=> [
-              [ 'required'=> true, 'message'=> '请输入管理员密码', 'trigger'=> 'blur' ],
-              [ 'min' => 6, 'max' => 16, 'message' => '长度在 6 到 16 个字符', 'trigger' => 'blur' ]
-          ],
-          'admin_email'=> [
-              ['required' => true,  'message' => '请输入管理员邮箱', 'trigger'=> 'blur'],
-              [ 'type' => 'email', 'message' => '请输入正确的邮箱地址', 'trigger' => 'blur,change' ]
-          ],
-          'admin_mobile'=> [
-              [ 'required'=> true, 'message'=> '请输入管理员手机', 'trigger'=> 'blur' ],
-              [ 'type' => 'email', 'message' => '请输入正确的手机号码', 'trigger' => 'blur,change' ]
-          ],
-      ];
       $this->builderForm
-              ->rules($rules)
+              ->rules($this->rules->admin())
               ->config('labelWidth','120px')
               ->item([
                 'name' => 'admin_account',
