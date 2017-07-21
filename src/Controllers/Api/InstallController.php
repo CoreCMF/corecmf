@@ -32,14 +32,14 @@ class InstallController extends Controller
       Rules $rules
     )
     {
-        $this->prerequisite = $prerequisite;
-        $this->install = $install;
+        $this->prerequisite = $prerequisite; //环境检测
+        $this->install = $install;  //安装
         $this->request = $request;
-        $this->container = $container;
-        $this->repository = $repository;
-        $this->rules = $rules;
-        $this->builderForm = $this->container->make('builderForm');
-        $this->builderHtml = $this->container->make('builderHtml');
+        $this->container = $container; //服务容器
+        $this->repository = $repository; //config
+        $this->rules = $rules; //前端验证规则
+        $this->builderForm = $this->container->make('builderForm');//自动构建 builderForm
+        $this->builderHtml = $this->container->make('builderHtml');//自动构建 builderHtml
     }
     public function index(CoreRequest $request)
     {
@@ -120,31 +120,8 @@ class InstallController extends Controller
         }
     }
     public function steps2(){
-        $rules = [
-            'sitename'=> [
-                ['required' => true,  'message' => '请输入网站名称', 'trigger'=> 'blur']
-            ],
-            'database_engine'=> [
-                [ 'required'=> true, 'message'=> '请选择数据库引擎', 'trigger'=> 'blur' ]
-            ],
-            'database_host'=> [
-                ['required' => true,  'message' => '请输入数据库地址', 'trigger'=> 'blur']
-            ],
-            'database_port'=> [
-                [ 'required'=> true, 'message'=> '请输入数据库端口', 'trigger'=> 'blur' ]
-            ],
-            'database_name'=> [
-                ['required' => true,  'message' => '请输入数据库名称', 'trigger'=> 'blur']
-            ],
-            'database_username'=> [
-                [ 'required'=> true, 'message'=> '请输入数据库用户名', 'trigger'=> 'blur' ]
-            ],
-            'database_password'=> [
-                ['required' => true,  'message' => '请输入数据库密码', 'trigger'=> 'blur']
-            ],
-        ];
         $this->builderForm
-             ->rules($rules)
+             ->rules($this->rules->database())
              ->config('labelWidth','120px')
              ->item([
                'name' => 'sitename',
@@ -250,6 +227,8 @@ class InstallController extends Controller
                 $steps=2;
             }else{
                 $this->databaseInstall();
+                $this->install->installModule('core');
+                $this->install->installModule('admin');
             }
             break;
           case 4:
@@ -263,6 +242,7 @@ class InstallController extends Controller
      */
     public function databaseCheck()
     {
+        return true;
       if ($this->request->input('database_engine') != 'sqlite') {
           $this->repository->set('database.default',$this->request->input('database_engine'));
           $sql = '';
