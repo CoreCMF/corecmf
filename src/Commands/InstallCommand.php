@@ -55,7 +55,9 @@ class InstallCommand extends Command
         $this->setEnv();
         $this->info('Set .env Success');
         $this->installModule();
+        $this->info('Install Module Success');
         $this->setAdmin();
+        $this->info('Set Admin Account '.$this->data->get('admin_account'));
     }
     public function setEnv()
     {
@@ -77,15 +79,12 @@ class InstallCommand extends Command
             'mobile' 	    => $this->data->get('admin_mobile'),
             'password' 	  => bcrypt($this->data->get('admin_password'))
         ]);
-        $this->info('Set Admin Account '.$this->data->get('admin_account'));
         return true;
     }
     public function installModule()
     {
         $this->install->installModule('core');
-        $this->info('Install Core Module Success');
         $this->install->installModule('admin');
-        $this->info('Install Admin Module Success');
     }
     public function setDataCommands()
     {
