@@ -207,10 +207,11 @@ class InstallController extends Controller
               ]);
     }
     public function steps4(){
-        $this->builderForm
-             ->item(['name' => 'agreement',  'type' => 'scrollbar', 'value' => config('corecmf.agreement'),])
-             ->item(['name' => 'password',   'type' => 'password',    'placeholder' => '4'])
-             ->config('formSubmit',[ 'hidden'=>true ]);
+      $this->builderForm->config('labelWidth','120px')
+                        ->item(['name' => 'success',  'type' => 'alert', 'title' => '恭喜你！安装成功！', 'itemType'=>'success'])
+                        ->item(['name' => 'webindex',  'type' => 'link', 'label'=>'网站首页', 'value' => url('')])
+                        ->item(['name' => 'webadmin',  'type' => 'link', 'label'=>'后台管理页面', 'value' => url('admin')])
+                        ->config('formSubmit',[ 'hidden'=>true ]);
     }
     public function eventHandler($request)
     {
