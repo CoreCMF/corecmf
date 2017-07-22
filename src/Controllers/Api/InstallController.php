@@ -211,6 +211,7 @@ class InstallController extends Controller
                         ->item(['name' => 'success',  'type' => 'alert', 'title' => '恭喜你！安装成功！', 'itemType'=>'success'])
                         ->item(['name' => 'webindex',  'type' => 'link', 'label'=>'网站首页', 'value' => url('')])
                         ->item(['name' => 'webadmin',  'type' => 'link', 'label'=>'后台管理页面', 'value' => url('admin')])
+                        ->config('formPrevious',['hidden'=>true,])
                         ->config('formSubmit',[ 'hidden'=>true ]);
     }
     public function eventHandler($request)
