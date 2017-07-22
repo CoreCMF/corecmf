@@ -77,7 +77,7 @@ class InstallCommand extends Command
             'name' 	      => $this->data->get('admin_account'),
             'email' 	    => $this->data->get('admin_email'),
             'mobile' 	    => $this->data->get('admin_mobile'),
-            'password' 	  => bcrypt($this->data->get('admin_password'))
+            'password' 	  => $this->data->get('admin_password')
         ]);
         return true;
     }
