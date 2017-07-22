@@ -35,9 +35,9 @@ class InstallController extends Controller
         $this->prerequisite = $prerequisite; //环境检测
         $this->install = $install;  //安装
         $this->request = $request;
-        $this->container = $container; //服务容器
-        $this->repository = $repository; //config
         $this->rules = $rules; //前端验证规则
+        $this->repository = $repository; //config
+        $this->container = $container; //服务容器
         $this->builderForm = $this->container->make('builderForm');//自动构建 builderForm
         $this->builderHtml = $this->container->make('builderHtml');//自动构建 builderHtml
     }
