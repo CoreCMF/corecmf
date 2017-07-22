@@ -55,6 +55,7 @@ class InstallCommand extends Command
         $this->setEnv();
         $this->info('Set .env Success');
         $this->installModule();
+        $this->setAdmin();
     }
     public function setEnv()
     {
