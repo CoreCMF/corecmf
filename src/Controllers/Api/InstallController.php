@@ -216,12 +216,6 @@ class InstallController extends Controller
     {
         $steps = $request->get('steps',0);
         switch ($steps) {
-          case 0:
-            break;
-          case 1:
-            break;
-          case 2:
-            break;
           case 3:
             if (!$this->databaseCheck()) {
                 $steps=2;
@@ -232,7 +226,11 @@ class InstallController extends Controller
             }
             break;
           case 4:
-            $this->steps4();
+            if (!$this->adminCheck()) {
+                $steps = 3;
+            }else{
+                $this->adminInstall();
+            }
             break;
         }
         return  $steps;
@@ -242,7 +240,6 @@ class InstallController extends Controller
      */
     public function databaseCheck()
     {
-        return true;
       if ($this->request->input('database_engine') != 'sqlite') {
           $this->repository->set('database.default',$this->request->input('database_engine'));
           $sql = '';
@@ -316,6 +313,41 @@ class InstallController extends Controller
         if ($setEnv) {
             $this->builderHtml->message([
                         'message'   => '数据库设置成功!',
+                        'type'      => 'success',
+                    ]);
+        }
+    }
+    public function adminCheck()
+    {
+        try {
+            $this->validate($this->request, [
+                'admin_email'     => 'required',
+                'admin_account' => 'required',
+                'admin_password' => 'required',
+                'admin_mobile' => 'required',
+            ], [
+                'admin_email.required'     => '必须填写管理员邮箱',
+                'admin_account.required' => '必须填写管理员账户',
+                'admin_password.required' => '必须填写管理员密码',
+                'admin_mobile.required' => '必须填写管理员密码',
+            ]);
+            return true;
+        } catch (Exception $exception) {
+            $this->builderHtml->message([
+                      'message'   => '输入的信息不符合后端要求',
+                      'type'      => 'error',
+                  ]);
+            return false;
+        }
+    }
+    public function adminInstall()
+    {
+        $command = $this->install->getCommand('corecmf:install');
+        $command->setAdminController($this->request->all());
+        $setEnv = $command->setAdmin();
+        if ($setEnv) {
+            $this->builderHtml->message([
+                        'message'   => '设置管理员成功!',
                         'type'      => 'success',
                     ]);
         }

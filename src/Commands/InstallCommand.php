@@ -3,6 +3,7 @@
 namespace CoreCMF\corecmf\Commands;
 
 use Illuminate\Console\Command;
+use CoreCMF\core\Models\User;
 
 use CoreCMF\core\Support\Commands\Install;
 
@@ -66,6 +67,17 @@ class InstallCommand extends Command
         $this->install->setEnv('DB_PASSWORD', $this->data->get('database_password'));
         return true;
     }
+    public function setAdmin()
+    {
+        $userModel = new User();
+        $response = $userModel->create([
+            'name' 	      => $this->data->get('admin_account'),
+            'email' 	    => $this->data->get('admin_email'),
+            'mobile' 	    => $this->data->get('admin_mobile'),
+            'password' 	  => bcrypt($this->data->get('admin_password'))
+        ]);
+        return true;
+    }
     public function installModule()
     {
         $this->install->installModule('core');
@@ -123,10 +135,15 @@ class InstallCommand extends Command
         $this->data->put('database_username', $data['database_username']);
         $this->data->put('database_password', $data['database_password']);
         $this->data->put('database_port', $data['database_port']);
-        // $this->data->put('admin_account', $data['account_username']);
-        // $this->data->put('admin_password', $data['account_password']);
-        // $this->data->put('admin_email', $data['account_mail']);
         $this->data->put('website', $data['sitename']);
+        $this->isDataSetted = true;
+    }
+    public function setAdminController(array $data)
+    {
+        $this->data->put('admin_account', $data['admin_account']);
+        $this->data->put('admin_password', $data['admin_password']);
+        $this->data->put('admin_email', $data['admin_email']);
+        $this->data->put('admin_mobile', $data['admin_mobile']);
         $this->isDataSetted = true;
     }
 }
