@@ -3,16 +3,16 @@
 namespace CoreCMF\corecmf\Controllers\Api;
 
 use Illuminate\Http\Request;
+use Illuminate\Container\Container;
 use App\Http\Controllers\Controller;
-
 
 class MainController extends Controller
 {
     private $builderMain;
     /** return  CoreCMF\core\Builder\Main */
-    public function __construct()
+    public function __construct(Container $container)
     {
-        $this->builderMain = resolve('builderCorecmfMain');        //全局统一实例
+        $this->builderMain = $container->make('builderCorecmfMain');        //全局统一实例
     }
     public function index()
     {
