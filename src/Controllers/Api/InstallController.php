@@ -176,7 +176,7 @@ class InstallController extends Controller
     public function steps3(){
       $this->builderForm
               ->rules($this->rules->admin())
-              ->config('labelWidth','120px')
+              ->config('labelWidth','110px')
               ->item([
                 'name' => 'admin_account',
                 'type' => 'text',
