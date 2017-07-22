@@ -13,8 +13,8 @@ use CoreCMF\core\Support\Prerequisite\WritablePath;
 class CorecmfServiceProvider extends ServiceProvider
 {
     protected $commands = [
-        'CoreCMF\corecmf\Commands\InstallCommand',
-        'CoreCMF\corecmf\Commands\UninstallCommand',
+        \CoreCMF\corecmf\Commands\InstallCommand::class,
+        \CoreCMF\corecmf\Commands\UninstallCommand::class,
     ];
     /**
      * Perform post-registration booting of services.
@@ -36,7 +36,6 @@ class CorecmfServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/../resources/mixes/vue-corecmf/dist/vendor/' => public_path('vendor'),
         ], 'public');
-
         $this->initService();
     }
 
