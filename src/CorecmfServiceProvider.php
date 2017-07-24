@@ -5,11 +5,6 @@ namespace CoreCMF\corecmf;
 use Artisan;
 use Illuminate\Support\ServiceProvider;
 use CoreCMF\core\Support\Builder\Main as builderCorecmfMain;
-use CoreCMF\core\Support\Contracts\Prerequisite;
-use CoreCMF\core\Support\Prerequisite\Composite;
-use CoreCMF\core\Support\Prerequisite\PhpExtension;
-use CoreCMF\core\Support\Prerequisite\PhpVersion;
-use CoreCMF\core\Support\Prerequisite\WritablePath;
 
 class CorecmfServiceProvider extends ServiceProvider
 {
@@ -54,13 +49,6 @@ class CorecmfServiceProvider extends ServiceProvider
     {
         $this->app->singleton('builderCorecmfMain', function () {
             return new builderCorecmfMain();
-        });
-        $this->app->singleton(Prerequisite::class, function () {
-            return new Composite(
-              new PhpVersion(config('corecmf.prerequisite.phpVersion')),
-              new PhpExtension(config('corecmf.prerequisite.phpExtension')),
-              new WritablePath(config('corecmf.prerequisite.writablePath'))
-            );
         });
     }
 
