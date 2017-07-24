@@ -48,7 +48,7 @@ class InstallCommand extends Command
      */
     public function handle()
     {
-        $this->info($this->install->publish('public'));
+        $this->info($this->install->publish('corecmf'));
         if (!$this->isDataSetted) {
           $this->setDataCommands();
         }
