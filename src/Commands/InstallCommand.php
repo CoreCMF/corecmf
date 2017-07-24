@@ -79,6 +79,7 @@ class InstallCommand extends Command
             'mobile' 	    => $this->data->get('admin_mobile'),
             'password' 	  => $this->data->get('admin_password')
         ]);
+        touch(storage_path() . DIRECTORY_SEPARATOR . 'installed');//锁定安装文件
         return true;
     }
     public function installModule()
