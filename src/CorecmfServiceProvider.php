@@ -2,6 +2,7 @@
 
 namespace CoreCMF\corecmf;
 
+use Artisan;
 use Illuminate\Support\ServiceProvider;
 use CoreCMF\core\Support\Builder\Main as builderCorecmfMain;
 use CoreCMF\core\Support\Contracts\Prerequisite;
@@ -27,16 +28,21 @@ class CorecmfServiceProvider extends ServiceProvider
         $this->commands($this->commands);
         // 加载配置
         $this->mergeConfigFrom(__DIR__.'/Config/config.php', 'corecmf');
-        //配置路由
-        $this->loadRoutesFrom(__DIR__.'/Routes/web.php');
-        $this->loadRoutesFrom(__DIR__.'/Routes/api.php');
+        if (!$this->isInstalled()) {
+            //配置路由
+            $this->loadRoutesFrom(__DIR__.'/Routes/web.php');
+            $this->loadRoutesFrom(__DIR__.'/Routes/api.php');
+        }
         //视图路由
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'corecmf');
         //设置发布前端文件
         $this->publishes([
             __DIR__.'/../resources/mixes/vue-corecmf/dist/vendor/' => public_path('vendor'),
-        ], 'public');
+        ], 'corecmf');
+        //加载依赖程序
         $this->initService();
+        //发布前端资源
+        $this->publish();
     }
 
     /**
@@ -68,6 +74,27 @@ class CorecmfServiceProvider extends ServiceProvider
         $providers = config('corecmf.providers');
         foreach ($providers as $provider) {
             $this->app->register($provider);
+        }
+    }
+    public function publish()
+    {
+        if (!file_exists(public_path() . DIRECTORY_SEPARATOR . 'vendor'. DIRECTORY_SEPARATOR .'corecmf')) {
+            Artisan::call('vendor:publish', [
+                '--tag' => 'corecmf','--force' => true
+            ]);
+        }
+    }
+    /**
+     * Get application installation status.
+     *
+     * @return bool
+     */
+    public function isInstalled()
+    {
+        if (!file_exists(storage_path() . DIRECTORY_SEPARATOR . 'installed')) {
+            return false;
+        }else{
+            return true;
         }
     }
 }
