@@ -2,8 +2,7 @@
 
 ## Structure
 
-```
-databases/        
+```     
 resources/
 src/
 ```
@@ -22,6 +21,8 @@ $ composer require corecmf/corecmf
 CoreCMF\corecmf\CorecmfServiceProvider::class,
 ```
 ##install
+直接浏览器访问项目地址安装
+例: http://corecmf.dev/
 ```
 php artisan corecmf:install
 ```
