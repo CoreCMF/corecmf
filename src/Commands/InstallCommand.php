@@ -73,12 +73,18 @@ class InstallCommand extends Command
     public function setAdmin()
     {
         $userModel = new User();
-        $response = $userModel->create([
+        $user = $userModel->create([
             'name' 	      => $this->data->get('admin_account'),
             'email' 	    => $this->data->get('admin_email'),
             'mobile' 	    => $this->data->get('admin_mobile'),
             'password' 	  => $this->data->get('admin_password')
         ]);
+        $user->userInfos()->create([
+            'user_id'   => $user->id,
+            'avatar'    => 1,
+            'integral'  => 0,
+            'money'     => 0,
+        ]);//插入关联数据库userInfos
         touch(storage_path() . DIRECTORY_SEPARATOR . 'installed');//锁定安装文件
         return true;
     }
