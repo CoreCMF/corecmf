@@ -85,6 +85,7 @@ class InstallCommand extends Command
             'integral'  => 0,
             'money'     => 0,
         ]);//插入关联数据库userInfos
+        $user->roles()->attach($user->id);//多对多关联 关联用户id
         touch(storage_path() . DIRECTORY_SEPARATOR . 'installed');//锁定安装文件
         return true;
     }
