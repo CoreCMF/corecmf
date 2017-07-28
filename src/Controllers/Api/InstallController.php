@@ -29,7 +29,7 @@ class InstallController extends Controller
       Request $request,
       Container $container,
       Repository $repository,
-      Rules $rules
+      InstallRules $rules
     )
     {
         $this->prerequisite = $prerequisite; //环境检测
