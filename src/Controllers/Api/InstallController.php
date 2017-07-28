@@ -10,7 +10,7 @@ use App\Http\Controllers\Controller;
 use CoreCMF\core\Support\Http\Request as CoreRequest;
 use CoreCMF\core\Support\Contracts\Prerequisite;
 use CoreCMF\core\Support\Commands\Install;
-use CoreCMF\corecmf\Validator\Rules;
+use CoreCMF\corecmf\Validator\InstallRules;
 
 class InstallController extends Controller
 {

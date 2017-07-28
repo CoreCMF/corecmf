@@ -3,7 +3,7 @@
 namespace CoreCMF\corecmf\Validator;
 
 use CoreCMF\core\Support\Validator\Rules as coreRules;
-class Rules extends coreRules
+class InstallRules extends coreRules
 {
     public function admin(){
         $this->mobile('请输入管理员手机号码');
