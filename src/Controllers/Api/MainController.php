@@ -9,15 +9,16 @@ use App\Http\Controllers\Controller;
 class MainController extends Controller
 {
     private $builderMain;
+    private $container;
     /** return  CoreCMF\core\Builder\Main */
     public function __construct(Container $container)
     {
+        $this->container = $container;
         $this->builderMain = $container->make('builderCorecmfMain');        //全局统一实例
     }
     public function index()
     {
-        $builderMain = $this->builderMain;
-        $builderMain->route([
+        $this->builderMain->route([
           'path'  =>  '/install',
           'name'  =>  'api.install',
           'apiUrl'  =>  route('api.install.index'),
@@ -25,6 +26,6 @@ class MainController extends Controller
           'component' =>  '<corecmf-install/>'
         ]);
 
-        return $builderMain->response();
+        return $this->container->make('builderHtml')->main($this->builderMain)->response();
     }
 }
