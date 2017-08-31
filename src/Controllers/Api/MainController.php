@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreCMF\corecmf\Controllers\Api;
+namespace CoreCMF\Corecmf\Controllers\Api;
 
 use Illuminate\Http\Request;
 use Illuminate\Container\Container;
@@ -10,7 +10,7 @@ class MainController extends Controller
 {
     private $builderMain;
     private $container;
-    /** return  CoreCMF\core\Builder\Main */
+    /** return  CoreCMF\Core\Builder\Main */
     public function __construct(Container $container)
     {
         $this->container = $container;

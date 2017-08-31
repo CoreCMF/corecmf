@@ -1,16 +1,16 @@
 <?php
 
-namespace CoreCMF\corecmf;
+namespace CoreCMF\Corecmf;
 
 use Artisan;
 use Illuminate\Support\ServiceProvider;
-use CoreCMF\core\Support\Builder\Main as builderCorecmfMain;
+use CoreCMF\Core\Support\Builder\Main as builderCorecmfMain;
 
 class CorecmfServiceProvider extends ServiceProvider
 {
     protected $commands = [
-        \CoreCMF\corecmf\Commands\InstallCommand::class,
-        \CoreCMF\corecmf\Commands\UninstallCommand::class,
+        \CoreCMF\Corecmf\Commands\InstallCommand::class,
+        \CoreCMF\Corecmf\Commands\UninstallCommand::class,
     ];
     /**
      * Perform post-registration booting of services.

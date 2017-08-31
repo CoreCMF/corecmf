@@ -1,8 +1,8 @@
 <?php
 
-namespace CoreCMF\corecmf\Validator;
+namespace CoreCMF\Corecmf\Validator;
 
-use CoreCMF\core\Support\Validator\Rules as coreRules;
+use CoreCMF\Core\Support\Validator\Rules as coreRules;
 class InstallRules extends coreRules
 {
     public function admin(){

@@ -1,12 +1,12 @@
 <?php
 
-namespace CoreCMF\corecmf\Commands;
+namespace CoreCMF\Corecmf\Commands;
 
 use Illuminate\Console\Command;
-use CoreCMF\core\Models\User;
+use CoreCMF\Core\Models\User;
 
-use CoreCMF\core\Support\Commands\Install;
-use CoreCMF\core\Models\Role;
+use CoreCMF\Core\Support\Commands\Install;
+use CoreCMF\Core\Models\Role;
 
 class InstallCommand extends Command
 {

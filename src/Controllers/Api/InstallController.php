@@ -1,16 +1,16 @@
 <?php
 
-namespace CoreCMF\corecmf\Controllers\Api;
+namespace CoreCMF\Corecmf\Controllers\Api;
 
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Config\Repository;
 use App\Http\Controllers\Controller;
-use CoreCMF\core\Support\Http\Request as CoreRequest;
-use CoreCMF\core\Support\Contracts\Prerequisite;
-use CoreCMF\core\Support\Commands\Install;
-use CoreCMF\corecmf\Validator\InstallRules;
+use CoreCMF\Core\Support\Http\Request as CoreRequest;
+use CoreCMF\Core\Support\Contracts\Prerequisite;
+use CoreCMF\Core\Support\Commands\Install;
+use CoreCMF\Corecmf\Validator\InstallRules;
 
 class InstallController extends Controller
 {

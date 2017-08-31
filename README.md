@@ -18,7 +18,7 @@ $ composer require corecmf/corecmf
 ## Usage
 安装完成后需要在config/app.php中注册服务提供者到providers数组：
 ```
-CoreCMF\corecmf\CorecmfServiceProvider::class,
+CoreCMF\Corecmf\CorecmfServiceProvider::class,
 ```
 ##install   
 直接浏览器访问项目地址安装   
