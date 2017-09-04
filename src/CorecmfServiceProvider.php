@@ -19,27 +19,25 @@ class CorecmfServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        //加载artisan commands
+        $this->commands($this->commands);
+        // 加载配置
+        $this->mergeConfigFrom(__DIR__.'/Config/config.php', 'corecmf');
         if (!$this->isInstalled()) {
-            //加载artisan commands
-            $this->commands($this->commands);
-            // 加载配置
-            $this->mergeConfigFrom(__DIR__.'/Config/config.php', 'corecmf');
-
             //配置路由
             $this->loadRoutesFrom(__DIR__.'/Routes/web.php');
             $this->loadRoutesFrom(__DIR__.'/Routes/api.php');
-
-            //视图路由
-            $this->loadViewsFrom(__DIR__.'/../resources/views', 'corecmf');
-            //设置发布前端文件
-            $this->publishes([
-                __DIR__.'/../resources/mixes/vue-corecmf/dist/vendor/' => public_path('vendor'),
-            ], 'corecmf');
-            //加载依赖程序
-            $this->initService();
-            //发布前端资源
-            $this->publish();
         }
+        //视图路由
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'corecmf');
+        //设置发布前端文件
+        $this->publishes([
+            __DIR__.'/../resources/mixes/vue-corecmf/dist/vendor/' => public_path('vendor'),
+        ], 'corecmf');
+        //加载依赖程序
+        $this->initService();
+        //发布前端资源
+        $this->publish();
     }
 
     /**
