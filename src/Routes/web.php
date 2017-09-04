@@ -20,6 +20,6 @@ Route::get('/',function(){
 });
 Route::group(['prefix' => 'install', 'middleware' => 'web', 'as' => 'install'], function () {
     Route::get('/{vue_capture?}', function () {
-        return view('corecmf::index');
+        return view('core::index', [ 'model' => 'corecmf' ]);
     })->where('vue_capture', '[\/\w\.-]*');
 });
