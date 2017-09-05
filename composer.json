@@ -1,6 +1,6 @@
 {
     "name": "corecmf/corecmf",
-    "type": "corecmf-corecmf",
+    "type": "Library",
     "description": "corecmf corecmf package",
     "keywords": [
         "CoreCMF",
