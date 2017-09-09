@@ -30,8 +30,7 @@ class InstallController extends Controller
       Container $container,
       Repository $repository,
       InstallRules $rules
-    )
-    {
+    ){
         $this->prerequisite = $prerequisite; //环境检测
         $this->install = $install;  //安装
         $this->request = $request;
