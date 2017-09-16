@@ -18,8 +18,8 @@
     ],
     "require": {
         "php": "~5.6|~7.0",
-        "CoreCMF/admin": "1.1.*",
-        "CoreCMF/core": "1.1.*",
+        "corecmf/admin": "1.1.*",
+        "corecmf/core": "1.1.*",
         "illuminate/support": "~5.1"
     },
     "require-dev": {
