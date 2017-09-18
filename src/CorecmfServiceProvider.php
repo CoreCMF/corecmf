@@ -8,8 +8,8 @@ use Illuminate\Support\ServiceProvider;
 class CorecmfServiceProvider extends ServiceProvider
 {
     protected $commands = [
-        \CoreCMF\Corecmf\Commands\InstallCommand::class,
-        \CoreCMF\Corecmf\Commands\UninstallCommand::class,
+        \CoreCMF\Corecmf\App\Console\InstallCommand::class,
+        \CoreCMF\Corecmf\App\Console\UninstallCommand::class,
     ];
     /**
      * Perform post-registration booting of services.

@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreCMF\Corecmf\Http\Controllers\Api;
+namespace CoreCMF\Corecmf\App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
