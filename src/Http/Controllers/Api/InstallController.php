@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreCMF\Corecmf\Controllers\Api;
+namespace CoreCMF\Corecmf\Http\Controllers\Api;
 
 use Exception;
 use Illuminate\Http\Request;

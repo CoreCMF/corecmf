@@ -10,7 +10,7 @@
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-Route::group(['prefix' => 'api', 'middleware' => 'api', 'namespace' => 'CoreCMF\Corecmf\Controllers\Api', 'as' => 'api.'], function () {
+Route::group(['prefix' => 'api', 'middleware' => 'api', 'namespace' => 'CoreCMF\Corecmf\Http\Controllers\Api', 'as' => 'api.'], function () {
     /*
     |--------------------------------------------------------------------------
     | corecmf主路由设置 routes

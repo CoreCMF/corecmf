@@ -1,9 +1,8 @@
 <?php
 
-namespace CoreCMF\Corecmf\Controllers\Api;
+namespace CoreCMF\Corecmf\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
-use Illuminate\Container\Container;
 use App\Http\Controllers\Controller;
 use CoreCMF\Core\Support\Builder\Main;
 

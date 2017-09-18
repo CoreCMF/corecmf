@@ -1,6 +1,6 @@
 <?php
 
-namespace CoreCMF\Corecmf\Commands;
+namespace CoreCMF\Corecmf\Http\Console;
 
 use Illuminate\Console\Command;
 use CoreCMF\Core\Http\Models\User;

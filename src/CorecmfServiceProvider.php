@@ -4,7 +4,6 @@ namespace CoreCMF\Corecmf;
 
 use Artisan;
 use Illuminate\Support\ServiceProvider;
-use CoreCMF\Core\Support\Builder\Main as builderCorecmfMain;
 
 class CorecmfServiceProvider extends ServiceProvider
 {
@@ -46,9 +45,6 @@ class CorecmfServiceProvider extends ServiceProvider
     {
         //加载依赖程序
         $this->initService();
-        $this->app->singleton('builderCorecmfMain', function () {
-            return new builderCorecmfMain();
-        });
     }
 
     public function initService()
