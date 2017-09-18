@@ -3,10 +3,10 @@
 namespace CoreCMF\Corecmf\Commands;
 
 use Illuminate\Console\Command;
-use CoreCMF\Core\Models\User;
+use CoreCMF\Core\Http\Models\User;
 
 use CoreCMF\Core\Support\Commands\Install;
-use CoreCMF\Core\Models\Role;
+use CoreCMF\Core\Http\Models\Role;
 
 class InstallCommand extends Command
 {
