@@ -4,7 +4,6 @@ namespace CoreCMF\Corecmf\Controllers\Api;
 
 use Exception;
 use Illuminate\Http\Request;
-use Illuminate\Container\Container;
 use Illuminate\Contracts\Config\Repository;
 use App\Http\Controllers\Controller;
 use CoreCMF\Core\Support\Http\Request as CoreRequest;
@@ -19,7 +18,6 @@ class InstallController extends Controller
     protected $prerequisite;
     protected $install;
     protected $request;
-    protected $container;
     protected $repository;
     protected $rules;
 
@@ -27,7 +25,6 @@ class InstallController extends Controller
       Prerequisite $prerequisite,
       Install $install,
       Request $request,
-      Container $container,
       Repository $repository,
       InstallRules $rules
     ){
@@ -36,9 +33,8 @@ class InstallController extends Controller
         $this->request = $request;
         $this->rules = $rules; //前端验证规则
         $this->repository = $repository; //config
-        $this->container = $container; //服务容器
-        $this->builderForm = $this->container->make('builderForm');//自动构建 builderForm
-        $this->builderHtml = $this->container->make('builderHtml');//自动构建 builderHtml
+        $this->builderForm = resolve('builderForm');//自动构建 builderForm
+        $this->builderHtml = resolve('builderHtml');//自动构建 builderHtml
     }
     public function index(CoreRequest $request)
     {
@@ -277,7 +273,7 @@ class InstallController extends Controller
                   break;
           }
           try {
-              $results = collect($this->container->make('db')->reconnect()->select($sql));
+              $results = collect(resolve('db')->reconnect()->select($sql));
               if ($results->count()) {
                   $error = '数据库[' . $this->request->input('database_name') . ']已经存在数据表，请先清空数据库！';
               } else {

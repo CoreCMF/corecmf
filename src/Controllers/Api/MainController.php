@@ -5,16 +5,15 @@ namespace CoreCMF\Corecmf\Controllers\Api;
 use Illuminate\Http\Request;
 use Illuminate\Container\Container;
 use App\Http\Controllers\Controller;
+use CoreCMF\Core\Support\Builder\Main;
 
 class MainController extends Controller
 {
     private $builderMain;
-    private $container;
     /** return  CoreCMF\Core\Builder\Main */
-    public function __construct(Container $container)
+    public function __construct(Main $builderMain)
     {
-        $this->container = $container;
-        $this->builderMain = $container->make('builderCorecmfMain');        //全局统一实例
+        $this->builderMain = $builderMain;        //全局统一实例
     }
     public function index()
     {
@@ -26,6 +25,6 @@ class MainController extends Controller
           'component' =>  '<corecmf-install/>'
         ]);
 
-        return $this->container->make('builderHtml')->main($this->builderMain)->response();
+        return resolve('builderHtml')->main($this->builderMain)->response();
     }
 }

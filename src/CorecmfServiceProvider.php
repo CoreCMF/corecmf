@@ -21,8 +21,7 @@ class CorecmfServiceProvider extends ServiceProvider
     {
         //加载artisan commands
         $this->commands($this->commands);
-        // 加载配置
-        $this->mergeConfigFrom(__DIR__.'/Config/config.php', 'corecmf');
+
         if (!$this->isInstalled()) {
             //配置路由
             $this->loadRoutesFrom(__DIR__.'/Routes/web.php');
@@ -34,8 +33,6 @@ class CorecmfServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__.'/../resources/mixes/vue-corecmf/dist/vendor/' => public_path('vendor'),
         ], 'corecmf');
-        //加载依赖程序
-        $this->initService();
         //发布前端资源
         $this->publish();
     }
@@ -47,6 +44,8 @@ class CorecmfServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        //加载依赖程序
+        $this->initService();
         $this->app->singleton('builderCorecmfMain', function () {
             return new builderCorecmfMain();
         });
@@ -54,6 +53,8 @@ class CorecmfServiceProvider extends ServiceProvider
 
     public function initService()
     {
+        // 加载配置
+        $this->mergeConfigFrom(__DIR__.'/Config/config.php', 'corecmf');
         //注册providers服务
         $this->registerProviders();
     }
