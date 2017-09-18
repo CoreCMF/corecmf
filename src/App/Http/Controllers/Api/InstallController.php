@@ -218,14 +218,14 @@ class InstallController extends Controller
                 $steps=2;
             }else{
                 $this->databaseInstall();
-                $this->install->installModule('core');
-                $this->install->installModule('admin');
+                $this->install->installModule('core');//安装核心模块
             }
             break;
           case 4:
             if (!$this->adminCheck()) {
                 $steps = 3;
             }else{
+                $this->install->installModule('admin');//安装admin模块
                 $this->adminInstall();
             }
             break;

@@ -5,8 +5,8 @@ namespace CoreCMF\Corecmf\App\Console;
 use Illuminate\Console\Command;
 use CoreCMF\Core\Support\Commands\Install;
 
-use CoreCMF\Core\Http\Models\User;
-use CoreCMF\Core\Http\Models\Role;
+use CoreCMF\Core\App\Models\User;
+use CoreCMF\Core\App\Models\Role;
 
 class InstallCommand extends Command
 {
