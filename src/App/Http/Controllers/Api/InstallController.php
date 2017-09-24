@@ -121,8 +121,8 @@ class InstallController extends Controller
              ->item([
                'name' => 'weburl',
                'type' => 'text',
-               'label'=>'网站名称',
-               'placeholder' => '请输入网站名称',
+               'label'=>'网站地址',
+               'placeholder' => '请输入网站地址,请勿输入http://或https://',
                'style' => ['max-width'=>'300px']
              ])
              ->item([
