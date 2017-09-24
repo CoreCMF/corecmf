@@ -119,7 +119,7 @@ class InstallController extends Controller
              ->rules($this->rules->database())
              ->config('labelWidth','120px')
              ->item([
-               'name' => 'sitename',
+               'name' => 'weburl',
                'type' => 'text',
                'label'=>'网站名称',
                'placeholder' => '请输入网站名称',

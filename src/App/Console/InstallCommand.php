@@ -62,7 +62,7 @@ class InstallCommand extends Command
     }
     public function setEnv()
     {
-        $this->install->setEnv('APP_NAME', $this->data->get('website'));
+        $this->install->setEnv('APP_URL', 'http://'.$this->data->get('weburl'));
         $this->install->setEnv('DB_CONNECTION', $this->data->get('driver'));
         $this->install->setEnv('DB_HOST', $this->data->get('database_host'));
         $this->install->setEnv('DB_PORT', $this->data->get('database_port'));
@@ -114,7 +114,7 @@ class InstallCommand extends Command
         $this->data->put('admin_password', $this->ask('管理员密码：'));
         $this->data->put('admin_email', $this->ask('电子邮箱：'));
         $this->data->put('admin_mobile', $this->ask('管理员手机'));
-        $this->data->put('website', $this->ask('网站标题：'));
+        $this->data->put('weburl', $this->ask('网站地址：'));
         $this->info('所填写的信息是：');
         $this->info('数据库引擎：' . $this->data->get('driver'));
         if (in_array($this->data->get('driver'), [
@@ -132,7 +132,7 @@ class InstallCommand extends Command
         $this->info('管理员密码：' . $this->data->get('admin_password'));
         $this->info('电子邮箱：' . $this->data->get('admin_email'));
         $this->info('管理员手机：' . $this->data->get('admin_mobile'));
-        $this->info('网站标题：' . $this->data->get('website'));
+        $this->info('网站地址：' . $this->data->get('weburl'));
         $this->isDataSetted = true;
     }
     /**
@@ -148,7 +148,7 @@ class InstallCommand extends Command
         $this->data->put('database_username', $data['database_username']);
         $this->data->put('database_password', $data['database_password']);
         $this->data->put('database_port', $data['database_port']);
-        $this->data->put('website', $data['sitename']);
+        $this->data->put('weburl', $data['weburl']);
         $this->isDataSetted = true;
     }
     public function setAdminController(array $data)
