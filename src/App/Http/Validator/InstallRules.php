@@ -27,7 +27,7 @@ class InstallRules extends coreRules
     }
     public function database(){
         return [
-            'sitename'=> [
+            'weburl'=> [
                 ['required' => true,  'message' => '请输入网站名称', 'trigger'=> 'blur']
             ],
             'database_engine'=> [
