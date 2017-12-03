@@ -78,7 +78,7 @@ class CorecmfServiceProvider extends ServiceProvider
     {
         if (!file_exists(storage_path() . DIRECTORY_SEPARATOR . 'installed')) {
             return false;
-        }else{
+        } else {
             return true;
         }
     }
