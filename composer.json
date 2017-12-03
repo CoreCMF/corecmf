@@ -49,7 +49,7 @@
                 "CoreCMF\\Corecmf\\CorecmfServiceProvider"
             ],
             "dont-discover": [
-                "Zizaco/Entrust"
+                "zizaco/entrust""
             ]
         }
     },
