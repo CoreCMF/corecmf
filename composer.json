@@ -47,9 +47,6 @@
         "laravel": {
             "providers": [
                 "CoreCMF\\Corecmf\\CorecmfServiceProvider"
-            ],
-            "dont-discover": [
-                "zizaco/entrust"
             ]
         }
     },
