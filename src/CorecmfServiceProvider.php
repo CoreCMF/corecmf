@@ -3,6 +3,7 @@
 namespace CoreCMF\Corecmf;
 
 use Artisan;
+use Illuminate\Filesystem\Filesystem;
 use Illuminate\Support\ServiceProvider;
 
 class CorecmfServiceProvider extends ServiceProvider
@@ -11,6 +12,7 @@ class CorecmfServiceProvider extends ServiceProvider
         \CoreCMF\Corecmf\App\Console\InstallCommand::class,
         \CoreCMF\Corecmf\App\Console\UninstallCommand::class,
     ];
+
     /**
      * Perform post-registration booting of services.
      *
@@ -18,6 +20,7 @@ class CorecmfServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        $this->initApplication();
         //加载artisan commands
         $this->commands($this->commands);
 
@@ -35,7 +38,24 @@ class CorecmfServiceProvider extends ServiceProvider
         //发布前端资源
         $this->publish();
     }
-
+    /**
+     * 初始化laravel程序部分文件修改配置
+     */
+    public function initApplication()
+    {
+        $files = new Filesystem;
+        $manifest = [
+            'corecmf/corecmf' => [
+                'providers' => [
+                    0 => 'CoreCMF\\Corecmf\\CorecmfServiceProvider',
+                  ]
+            ]
+        ];
+        $files->put(
+            app()->getCachedPackagesPath(), '<?php return '.var_export($manifest, true).';'
+        );
+        app()->registerConfiguredProviders();
+    }
     /**
      * Register any package services.
      *
