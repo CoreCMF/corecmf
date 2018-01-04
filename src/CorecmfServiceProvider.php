@@ -43,6 +43,16 @@ class CorecmfServiceProvider extends ServiceProvider
         $this->publish();
     }
     /**
+     * Register any package services.
+     *
+     * @return void
+     */
+    public function register()
+    {
+        //加载依赖程序
+        $this->initService();
+    }
+    /**
      * 初始化laravel程序部分文件修改配置
      */
     public function initApplication()
@@ -73,17 +83,6 @@ class CorecmfServiceProvider extends ServiceProvider
         (new ProviderRepository(app(), new Filesystem, app()->getCachedServicesPath()))
                     ->load($providers->collapse()->toArray());
     }
-    /**
-     * Register any package services.
-     *
-     * @return void
-     */
-    public function register()
-    {
-        //加载依赖程序
-        $this->initService();
-    }
-
     public function initService()
     {
         // 加载配置
