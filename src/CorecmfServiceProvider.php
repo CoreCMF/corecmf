@@ -3,6 +3,11 @@
 namespace CoreCMF\Corecmf;
 
 use Artisan;
+use Illuminate\Foundation\PackageManifest;
+use Illuminate\Foundation\ProviderRepository;
+use Illuminate\Filesystem\Filesystem;
+use Illuminate\Support\Str;
+use Illuminate\Support\Collection;
 use Illuminate\Support\ServiceProvider;
 
 class CorecmfServiceProvider extends ServiceProvider
@@ -11,6 +16,7 @@ class CorecmfServiceProvider extends ServiceProvider
         \CoreCMF\Corecmf\App\Console\InstallCommand::class,
         \CoreCMF\Corecmf\App\Console\UninstallCommand::class,
     ];
+
     /**
      * Perform post-registration booting of services.
      *
@@ -22,6 +28,7 @@ class CorecmfServiceProvider extends ServiceProvider
         $this->commands($this->commands);
 
         if (!$this->isInstalled()) {
+            $this->initApplication();
             //配置路由
             $this->loadRoutesFrom(__DIR__.'/Routes/web.php');
             $this->loadRoutesFrom(__DIR__.'/Routes/api.php');
@@ -35,7 +42,6 @@ class CorecmfServiceProvider extends ServiceProvider
         //发布前端资源
         $this->publish();
     }
-
     /**
      * Register any package services.
      *
@@ -46,7 +52,37 @@ class CorecmfServiceProvider extends ServiceProvider
         //加载依赖程序
         $this->initService();
     }
-
+    /**
+     * 初始化laravel程序部分文件修改配置
+     */
+    public function initApplication()
+    {
+        $files = new Filesystem;
+        $manifest = [
+            'corecmf/corecmf' => [
+                'providers' => [
+                    0 => 'CoreCMF\\Corecmf\\CorecmfServiceProvider',
+                  ]
+            ]
+        ];
+        $files->put(
+            app()->getCachedPackagesPath(), '<?php return '.var_export($manifest, true).';'
+        );
+        $this->registerConfiguredProviders();
+    }
+    /**
+     * 重新写入services.php
+     */
+    public function registerConfiguredProviders()
+    {
+        $providers = Collection::make(config('app.providers'))
+                        ->partition(function ($provider) {
+                            return Str::startsWith($provider, 'Illuminate\\');
+                        });
+        $providers->splice(1, 0, [['CoreCMF\\Corecmf\\CorecmfServiceProvider']]);
+        (new ProviderRepository(app(), new Filesystem, app()->getCachedServicesPath()))
+                    ->load($providers->collapse()->toArray());
+    }
     public function initService()
     {
         // 加载配置
