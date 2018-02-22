@@ -66,7 +66,8 @@ class CorecmfServiceProvider extends ServiceProvider
             ]
         ];
         $files->put(
-            app()->getCachedPackagesPath(), '<?php return '.var_export($manifest, true).';'
+            app()->getCachedPackagesPath(),
+            '<?php return '.var_export($manifest, true).';'
         );
         $this->registerConfiguredProviders();
     }
@@ -79,7 +80,7 @@ class CorecmfServiceProvider extends ServiceProvider
                         ->partition(function ($provider) {
                             return Str::startsWith($provider, 'Illuminate\\');
                         });
-        $providers->splice(1, 0, [['CoreCMF\\Corecmf\\CorecmfServiceProvider']]);
+        $providers->splice(2, 0, [['CoreCMF\\Corecmf\\CorecmfServiceProvider']]);
         (new ProviderRepository(app(), new Filesystem, app()->getCachedServicesPath()))
                     ->load($providers->collapse()->toArray());
     }

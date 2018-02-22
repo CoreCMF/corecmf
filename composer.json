@@ -7,7 +7,7 @@
         "corecmf"
     ],
     "homepage": "https://github.com/CoreCMF/corecmf",
-    "license": "laravel vue corecmf corecmf",
+    "license": "MIT",
     "authors": [
         {
             "name": "bigrocs",
