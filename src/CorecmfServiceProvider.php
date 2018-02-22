@@ -82,7 +82,7 @@ class CorecmfServiceProvider extends ServiceProvider
                         });
         $providers->splice(2, 0, [['CoreCMF\\Corecmf\\CorecmfServiceProvider']]);
         (new ProviderRepository(app(), new Filesystem, app()->getCachedServicesPath()))
-                    ->load($providers->collapse()->toArray());
+            ->load($providers->collapse()->toArray());
     }
     public function initService()
     {
