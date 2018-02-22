@@ -1,33 +1,33 @@
 <?php
 return [
-	'name' => 'corecmf',
-	'description' => 'corecmf',
-	'author' => 'bigRocs',
-	'providers' => [
-			CoreCMF\Admin\AdminServiceProvider::class,  //admin
-			CoreCMF\Core\CoreServiceProvider::class,  //CoreServiceProvider
-	],
-	//安装检测 php 版本 php扩展 目录权限
-	'prerequisite' => [
-		'phpVersion' => '5.6.4',
-		'phpExtension' => [
-			'DOM',
-			'FileInfo',
-			'GD',
-			'Json',
-			'Mbstring',
-			'OpenSSL',
-			'PDO',
-			'PDO_mysql',
-			'XML',
-			'Tokenizer'
-		],
-		'writablePath' => [
-			public_path(),
-			storage_path(),
-		]
-	],
-	'agreement' => '
+    'name' => 'corecmf',
+    'description' => 'corecmf',
+    'author' => 'bigRocs',
+    'providers' => [
+            CoreCMF\Admin\AdminServiceProvider::class,  //admin
+            CoreCMF\Core\CoreServiceProvider::class,  //CoreServiceProvider
+    ],
+    //安装检测 php 版本 php扩展 目录权限
+    'prerequisite' => [
+        'phpVersion' => '5.6.4',
+        'phpExtension' => [
+            'DOM',
+            'FileInfo',
+            'GD',
+            'Json',
+            'Mbstring',
+            'OpenSSL',
+            'PDO',
+            'PDO_mysql',
+            'XML',
+            'Tokenizer'
+        ],
+        'writablePath' => [
+            public_path(),
+            storage_path(),
+        ]
+    ],
+    'agreement' => '
 			<p>Apache 许可协议, 版本 2.0</p>
 			<p>Apache License</p>
 			<p>版本 2.0，2004 年1月</p>

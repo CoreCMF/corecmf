@@ -15,7 +15,7 @@
 | corecmf路由设置 routes
 |--------------------------------------------------------------------------
 */
-Route::get('/',function(){
+Route::get('/', function () {
     return redirect()->route('install');
 });
 Route::group(['prefix' => 'install', 'middleware' => 'web', 'as' => 'install'], function () {
