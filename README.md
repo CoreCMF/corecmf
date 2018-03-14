@@ -12,7 +12,7 @@ src/
 Via Composer
 
 ```bash
-$ composer require corecmf/corecmf
+$ composer require corecmf/corecmf:^2.3
 ```
 
 ## Usage
